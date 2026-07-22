@@ -9,8 +9,8 @@
  * Isso NÃO é frescura de nomenclatura: são coisas realmente diferentes em
  * runtime, herdadas do próprio JavaScript. TypeScript só formaliza a
  * distinção que o JS sempre teve, mas que sem tipos passava despercebida.
- * 
- * Roda o arquivo sem complar npx tsx tipos-primitivos-e-wrappers.ts
+ *
+ * Para rodar: npx tsc --strict exemplo-primitivos-vs-wrappers.ts && node exemplo-primitivos-vs-wrappers.js
  */
 
 // ─────────────────────────────────────────────────────────────
@@ -45,12 +45,32 @@ console.log(nomeObjeto == "Danilo");             // true  — "==" força coerç
 // Dois objetos "iguais" nunca são o mesmo objeto:
 console.log(new String("x") === new String("x")); // false — referências diferentes
 
+// O MESMO padrão se repete com number e boolean — não é só coisa de string:
+
+console.log(idadePrimitiva === 25); // true  — primitivo compara por valor
+console.log(idadeObjeto === 25);     // false — objeto compara por referência
+console.log(idadeObjeto == 25);      // true  — "==" força coerção do objeto para number
+
+console.log(ativoPrimitivo === true); // true  — primitivo compara por valor
+console.log(ativoObjeto === true);     // false — objeto compara por referência
+console.log(ativoObjeto == true);      // true  — "==" força coerção do objeto para boolean
+
+// Curiosidade que costuma pegar gente desprevenida: um Boolean(false) OBJETO
+// é "truthy" dentro de um if — porque todo objeto é truthy, mesmo envolvendo
+// um valor falso por dentro:
+const armadilha: Boolean = new Boolean(false);
+if (armadilha) {
+  console.log("Entrou no if mesmo o valor interno sendo 'false' — é um objeto, e objeto é sempre truthy");
+}
+
 // ─────────────────────────────────────────────────────────────
 // 3. ATRIBUIÇÃO: PRIMITIVO → WRAPPER funciona, o INVERSO NÃO
 // (testado com tsc --strict antes de escrever este arquivo)
 // ─────────────────────────────────────────────────────────────
 
 let permitido: String = "primitivo indo para tipo wrapper"; // ✅ compila
+console.log(permitido); // roda normal — em runtime é só uma string comum,
+                         // a diferença de tipo só existe em tempo de compilação
 // TypeScript aceita porque todo primitivo "cabe" estruturalmente no wrapper
 
 // A linha abaixo, se descomentada, NÃO compila:
@@ -79,7 +99,7 @@ const senhaVindaDeAlgumLugar = new String("1234"); // se isso viesse assim por e
 // Sem TypeScript, em JavaScript puro, isso compilaria e rodaria — e o "===" 
 // dentro da função retornaria FALSE mesmo com o valor "certo", porque um
 // objeto nunca é === a um primitivo. Esse é o tipo de bug silencioso que
-// TypeScript existe para prevenir (ligando ao que vimos sobre o estudo da UCL).
+// TypeScript existe para prevenir
 
 // ─────────────────────────────────────────────────────────────
 // 5. MÉTODOS FUNCIONAM NOS DOIS, MAS POR UM MOTIVO DIFERENTE
