@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/Danilo-dps/typescript-learning#readme",
   "devDependencies": {
+    "tsx": "^4.23.1",
     "typescript": "^7.0.2"
   }
 }
